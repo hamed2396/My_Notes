@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyNotes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="android:windowBackground">@color/seashell</item>
+        <item name="fontFamily">@font/abel</item>
+        <item name="android:statusBarColor">@color/seashell</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="fab_square" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30%</item>
+    </style>
+    <style name="circle" parent="">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+       <item name="rippleColor">@color/black</item>
+
+
+    </style>
+
+
+    <style name="Theme.MyNotes" parent="Base.Theme.MyNotes" />
+</resources>

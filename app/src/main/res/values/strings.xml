@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">My Notes</string>
+    <string name="undo">undo</string>
+    <string name="pin">Note Pinned</string>
+    <string name="unpin">Note unPinned</string>
+    <string name="delete">Note deleted successfully</string>
+    <string name="save">Note saved successfully</string>
+    <string name="errorMessage">something went Wrong</string>
+    <string name="emptyTextFields">fields Can Note be empty</string>
+    <string name="emptyNote">try adding some Notes</string>
+    <string name="undoMessage">Note recovered</string>
+    <string name="emptySearch">Nothing Found</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_note_content_desc">add Note</string>
+    <string name="empty_note_content_desc">emptyNote</string>
+    <string name="filtering">filter</string>
+    <string name="layout_manager">layout</string>
+    <string name="search">search</string>
+    <string name="action_layout_grid">see as grid\n</string>
+    <string name="action_layout_list">see as Linear\n</string>
+    <string name="title">Title</string>
+    <string name="description">description</string>
+    <string name="done">done</string>
+    <string name="dialog_text">Delete this note?</string>
+    <string name="apply_filters">Apply Filters..</string>
+    <string name="all_note">All Note</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="date_descending">Date descending</string>
+</resources>

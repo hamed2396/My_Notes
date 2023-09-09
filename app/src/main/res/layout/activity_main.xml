@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/mainView" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+
+        <com.google.android.material.card.MaterialCardView
+
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            app:cardElevation="5dp"
+            app:layout_constraintTop_toTopOf="parent"> <!-- Set the elevation here -->
+
+            <com.google.android.material.appbar.MaterialToolbar
+
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/menu_toolbar"
+                app:title="My Notes"
+                app:titleTextColor="@color/Gunmetal"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/seashell" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/navHost"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:navGraph="@navigation/nav_main" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
