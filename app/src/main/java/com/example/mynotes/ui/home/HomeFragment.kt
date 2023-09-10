@@ -55,17 +55,6 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
 
 
 
-           /* (activity as MainActivity).searchViewSubject.applySchedulers().subscribe {
-                title = it
-                if (it.isNotEmpty()) {
-                    presenter.searchNote(it)
-
-                } else {
-
-                    presenter.getNotes()
-
-                }
-            }*/
             presenter.getSearchText(this@HomeFragment).subscribe {
                 title=it
             }
@@ -74,29 +63,6 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
 
             showToolBar()
             showLayoutManager()
-
-
-         /*   whatLayoutManager().applySchedulers().subscribe {
-
-                layoutManager = it
-                if (isFilterSelected != -1) {
-                    presenter.getFilteredNote(this@HomeFragment)
-
-
-
-                    return@subscribe
-                }
-                if (isFilterSelected == -1) {
-                    if (title != null) {
-                        presenter.searchNote(title!!)
-                    } else {
-                        presenter.getNotes()
-                    }
-                }
-
-
-            }*/
-
 
             btnGoToAdd.clicks().applySchedulersToClicks().subscribe {
                 findNavController().navigate(R.id.action_homeFragment_to_addFragment)
@@ -163,35 +129,6 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
         binding.root.showSnackBar(getString(R.string.delete))
 
     }
-
-    /* private fun whatLayoutManager(): Observable<LayoutManager> {
-
-         val layoutManagerSubject = BehaviorSubject.createDefault<LayoutManager>(
-             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-         )
-         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-         CoroutineScope(Dispatchers.IO).launch {
-             dataStore.readFromDs().collect {
-
-                 layoutManager = if (it) {
-
-                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                 } else {
-
-                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-                 }
-
-
-                 layoutManagerSubject.onNext(layoutManager)
-
-             }
-         }
-
-         return layoutManagerSubject.hide()
-
-
-     }*/
 
     private fun showToolBar() {
         val activity = requireActivity() as AppCompatActivity
