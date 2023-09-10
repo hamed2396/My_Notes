@@ -1,7 +1,6 @@
 package com.example.mynotes.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     val searchViewSubject = PublishSubject.create<String>()
     val filterNoteSubject = PublishSubject.create<Int>()
     private var selectedItem = -1
-    private val TAG = "mytag"
+
 
 
     @Inject

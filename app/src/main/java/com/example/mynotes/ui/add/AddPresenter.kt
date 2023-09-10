@@ -1,7 +1,9 @@
 package com.example.mynotes.ui.add
 
+import androidx.fragment.app.Fragment
 import com.example.mynotes.data.models.entity.NoteEntity
 import com.example.mynotes.data.repository.add.AddRepository
+import com.example.mynotes.ui.MainActivity
 import com.example.mynotes.utils.applySchedulers
 import com.example.mynotes.utils.base.BasePresenterImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -20,9 +22,10 @@ class AddPresenter @Inject constructor(
     }
 
     override fun getSingleNote(id: Int) {
-        disposable=repository.getSingleNote(id).applySchedulers().subscribe {
+        disposable = repository.getSingleNote(id).applySchedulers().subscribe {
             view.showSingleNote(it)
         }
     }
+
 
 }

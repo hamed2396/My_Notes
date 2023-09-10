@@ -2,13 +2,12 @@ package com.example.mynotes.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mynotes.R
 import com.example.mynotes.data.models.entity.NoteEntity
 import com.example.mynotes.databinding.FragmentHomeBinding
@@ -22,19 +21,14 @@ import com.example.mynotes.utils.showSnackBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.rxbinding4.view.clicks
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 @SuppressLint("CheckResult")
 class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
     HomeContract.View {
-    private val TAG="mytag"
-    var isFilterSelected=-1
+    private val TAG = "mytag"
+    private var isFilterSelected = -1
 
     @Inject
     lateinit var noteAdapter: NoteAdapter
@@ -46,60 +40,62 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
     @Inject
     lateinit var presenter: HomePresenter
     private lateinit var layoutManager: LayoutManager
-    private var title: String? = null
+    private var title=""
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-                filterNote()
-            if (isFilterSelected!= -1){
+            presenter.getFilteredNote(this@HomeFragment)
+            if (isFilterSelected != -1) {
 
                 filterNoteOnBack(isFilterSelected)
             }
 
 
 
-            (activity as MainActivity).searchViewSubject.applySchedulers().subscribe {
+           /* (activity as MainActivity).searchViewSubject.applySchedulers().subscribe {
                 title = it
                 if (it.isNotEmpty()) {
                     presenter.searchNote(it)
 
                 } else {
+
                     presenter.getNotes()
 
-
-
                 }
+            }*/
+            presenter.getSearchText(this@HomeFragment).subscribe {
+                title=it
             }
 
 
 
             showToolBar()
+            showLayoutManager()
 
 
-            whatLayoutManager().applySchedulers().subscribe {
+         /*   whatLayoutManager().applySchedulers().subscribe {
 
                 layoutManager = it
-                if (isFilterSelected!= -1){
-                    filterNote()
+                if (isFilterSelected != -1) {
+                    presenter.getFilteredNote(this@HomeFragment)
 
 
 
                     return@subscribe
                 }
-                if (isFilterSelected == -1){
+                if (isFilterSelected == -1) {
                     if (title != null) {
                         presenter.searchNote(title!!)
-                    }else{
+                    } else {
                         presenter.getNotes()
                     }
                 }
 
 
-
-
-            }
+            }*/
 
 
             btnGoToAdd.clicks().applySchedulersToClicks().subscribe {
@@ -133,13 +129,11 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
 
     override fun showNotes(notes: List<NoteEntity>) {
         binding.apply {
-            
+
             noteRecycler.apply {
                 noteAdapter.setData(notes)
                 adapter = noteAdapter
                 layoutManager = this@HomeFragment.layoutManager
-
-
 
 
             }
@@ -170,34 +164,34 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
 
     }
 
-    private fun whatLayoutManager(): Observable<LayoutManager> {
+    /* private fun whatLayoutManager(): Observable<LayoutManager> {
 
-        val layoutManagerSubject = BehaviorSubject.createDefault<LayoutManager>(
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        )
-        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.readFromDs().collect {
+         val layoutManagerSubject = BehaviorSubject.createDefault<LayoutManager>(
+             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+         )
+         layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+         CoroutineScope(Dispatchers.IO).launch {
+             dataStore.readFromDs().collect {
 
-                layoutManager = if (it) {
+                 layoutManager = if (it) {
 
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                } else {
+                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                 } else {
 
-                    StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-                }
-
-
-                layoutManagerSubject.onNext(layoutManager)
-
-            }
-        }
-
-        return layoutManagerSubject.hide()
+                 }
 
 
-    }
+                 layoutManagerSubject.onNext(layoutManager)
+
+             }
+         }
+
+         return layoutManagerSubject.hide()
+
+
+     }*/
 
     private fun showToolBar() {
         val activity = requireActivity() as AppCompatActivity
@@ -263,40 +257,66 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::in
 
     }
 
-    private fun filterNote(){
-
-        (activity as MainActivity).filterNoteSubject.applySchedulers().subscribe {
-
-            isFilterSelected=it
-            when(isFilterSelected){
-                0->{
-                    presenter.getNotes()
-                }
-                1->{
-
-                    presenter.filterAlphabetically()
-                }
-                2->{
-                    presenter.filterByDate()
-                }
-            }
-        }
-    }
-    private fun filterNoteOnBack(item:Int){
-        when(item){
-            0->{
+    override fun showFilteredNote(id: Int) {
+        isFilterSelected = id
+        when (isFilterSelected) {
+            0 -> {
                 presenter.getNotes()
             }
-            1->{
+
+            1 -> {
 
                 presenter.filterAlphabetically()
             }
-            2->{
+
+            2 -> {
                 presenter.filterByDate()
             }
         }
     }
-}
+
+    private fun filterNoteOnBack(item: Int) {
+        when (item) {
+            0 -> {
+                presenter.getNotes()
+            }
+
+            1 -> {
+
+                presenter.filterAlphabetically()
+            }
+
+            2 -> {
+                presenter.filterByDate()
+            }
+        }
+    }
+
+    private fun showLayoutManager() {
+
+        presenter.getLayoutManager(requireContext(), dataStore).subscribe {
+            Log.e(TAG, "showLayoutManager: ", )
+            layoutManager = it
+            if (isFilterSelected != -1) {
+                presenter.getFilteredNote(this@HomeFragment)
+
+
+
+                return@subscribe
+            }
+            if (isFilterSelected == -1) {
+                if (title != null) {
+                    presenter.searchNote(title!!)
+                } else {
+                    presenter.getNotes()
+                }
+            }
+
+
+        }
+        }
+    }
+
 
 
 
